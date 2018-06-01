@@ -12,6 +12,7 @@ package fastlane_c_i;
 
 service Agent {
   rpc Spawn(Command) returns (stream Log) {}
+  rpc SendFile(FileRequest) returns (FileResponse) {}
 }
 
 message Log {
@@ -42,4 +43,17 @@ message Command {
 
   // a map of the environment to be given to the child process.
   map<string,string> env = 3;
+
+  // TODO: some kind of ID for a given run to be used
+}
+
+// Represents the parameters 
+message FileRequest {
+  // TODO: some kind of ID for a given run
+}
+
+message FileResponse {
+  string fileName = 1;
+
+  bytes artifactData = 2;
 }

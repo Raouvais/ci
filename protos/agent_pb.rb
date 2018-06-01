@@ -21,10 +21,18 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     repeated :parameters, :string, 2
     map :env, :string, :string, 3
   end
+  add_message "fastlane_c_i.FileRequest" do
+  end
+  add_message "fastlane_c_i.FileResponse" do
+    optional :fileName, :string, 1
+    optional :artifactData, :bytes, 2
+  end
 end
 
 module FastlaneCI
   Log = Google::Protobuf::DescriptorPool.generated_pool.lookup("fastlane_c_i.Log").msgclass
   Log::Level = Google::Protobuf::DescriptorPool.generated_pool.lookup("fastlane_c_i.Log.Level").enummodule
   Command = Google::Protobuf::DescriptorPool.generated_pool.lookup("fastlane_c_i.Command").msgclass
+  FileRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("fastlane_c_i.FileRequest").msgclass
+  FileResponse = Google::Protobuf::DescriptorPool.generated_pool.lookup("fastlane_c_i.FileResponse").msgclass
 end
