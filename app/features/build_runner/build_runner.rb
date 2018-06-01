@@ -225,6 +225,12 @@ module FastlaneCI
       env_mapping[:CI_BUILD_NUMBER] = env_mapping[:BUILD_NUMBER]
       env_mapping[:CI_BUILD_URL] = env_mapping[:BUILD_URL]
       env_mapping[:CI_BRANCH] = env_mapping[:GIT_BRANCH]
+
+      artifact_directory = "temporary_artifacts"
+      env_mapping[:FASTLANE_CI_ARTIFACTS] = artifact_directory
+      env_mapping[:GYM_OUTPUT_DIRECTORY] = artifact_directory
+      env_mapping[:SNAPSHOT_OUTPUT_DIRECTORY] = artifact_directory
+
       # env_mapping[:CI_PULL_REQUEST] = nil # TODO: do we have the PR information here?
 
       # Now that we have the CI specific ENV variables, let's go through the ENV variables
