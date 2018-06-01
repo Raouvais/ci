@@ -1,4 +1,5 @@
 require "rake/clean"
+require "fileutils"
 require "tmpdir"
 
 module Env
@@ -8,7 +9,10 @@ module Env
 end
 
 task :temp_dir do
-  dir = Dir.mktmpdir("fastlane-ci")
+  dir = "/tmp/yolo"
+  artifacts_path = File.join(dir, ENV["FASTLANE_CI_ARTIFACTS"])
+  FileUtils.mkdir_p(artifacts_path)
+  puts "Using artifacts path '#{artifacts_path}'"
   Dir.chdir(dir)
 end
 CLEAN.add(File.join(Dir.tmpdir, "fastlane-ci*"))
@@ -29,6 +33,7 @@ task :cocoapods do
 end
 
 desc("run a fastlane action")
-task :fastlane, [:action] => [:git_clone, :bundler, :cocoapods] do |t, args|
-  sh "bundle exec fastlane #{args.action}"
+task :fastlane, [:action] => [:git_clone, :bundler] do |t, args|
+  log_path = File.join(ENV["FASTLANE_CI_ARTIFACTS"], "fastlane.log")
+  sh "bundle exec fastlane #{args.action} | tee '#{log_path}'"
 end

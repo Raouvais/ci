@@ -24,8 +24,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "fastlane_c_i.FileRequest" do
   end
   add_message "fastlane_c_i.FileResponse" do
-    optional :fileName, :string, 1
-    optional :artifactData, :bytes, 2
+    optional :chunk, :bytes, 1
   end
 end
 

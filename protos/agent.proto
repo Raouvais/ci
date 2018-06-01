@@ -12,7 +12,7 @@ package fastlane_c_i;
 
 service Agent {
   rpc Spawn(Command) returns (stream Log) {}
-  rpc SendFile(FileRequest) returns (FileResponse) {}
+  rpc SendFile(FileRequest) returns (stream FileResponse) {}
 }
 
 message Log {
@@ -53,7 +53,7 @@ message FileRequest {
 }
 
 message FileResponse {
-  string fileName = 1;
+  // string fileName = 1;
 
-  bytes artifactData = 2;
+  bytes chunk = 1;
 }

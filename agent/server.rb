@@ -1,5 +1,6 @@
 require "logger"
 require "open3"
+require "shellwords"
 require_relative "agent"
 
 module FastlaneCI
@@ -57,7 +58,28 @@ module FastlaneCI
         # convert every line from io to a Log object in a lazy stream
         output_enumerator.lazy.flat_map do |line, status|
           # proto3 doesn't have nullable fields, afaik
+          puts line
           Log.new(message: (line || NULL_CHAR), status: (status || 0))
+        end
+      end
+
+      def send_file(file_request, _call)
+        @logger.info("Sending a file")
+
+        puts 'hi'
+        compressed_artifacts = File.expand_path("/tmp/yolo/compressed_artifacts.tar")
+        Dir.chdir("/tmp/yolo") do
+          `tar -cvf #{compressed_artifacts.shellescape} temporary_artifacts`
+        end
+
+        puts "Preparing sending file"
+        count = 0
+        IO.foreach(compressed_artifacts, "stefanfelix", 1024 * 1024, { mode: "rb" }).lazy.flat_map do |chunk|
+          puts "Sending a chunk here... #{chunk.class} (#{count})"
+          count += 1
+          FileResponse.new(
+            chunk: chunk
+          )
         end
       end
     end
@@ -65,7 +87,6 @@ module FastlaneCI
 end
 
 if $0 == __FILE__
-
   server = FastlaneCI::Agent::Server.server
 
   Signal.trap("SIGINT") do
