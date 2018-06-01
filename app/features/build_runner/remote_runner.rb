@@ -162,6 +162,12 @@ module FastlaneCI
       env_mapping[:CI_BRANCH] = env_mapping[:GIT_BRANCH]
       # env_mapping[:CI_PULL_REQUEST] = nil # TODO: do we have the PR information here?
 
+      # Setting artifact output directory
+      artifact_directory = "temporary_artifacts"
+      env_mapping[:FASTLANE_CI_ARTIFACTS] = artifact_directory
+      env_mapping[:GYM_OUTPUT_DIRECTORY] = artifact_directory
+      env_mapping[:SNAPSHOT_OUTPUT_DIRECTORY] = artifact_directory
+
       # Now that we have the CI specific ENV variables, let's go through the ENV variables
       # the user defined in their configuration
       Services.environment_variable_service.environment_variables.each do |environment_variable|
